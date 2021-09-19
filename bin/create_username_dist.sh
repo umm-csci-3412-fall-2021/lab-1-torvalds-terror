@@ -15,4 +15,4 @@ sort "$dir"/tmpUsername.txt
 uniq c tmpUsername.txt | awk 'match($0, /([0-9]+) ([a-zA-Z0-9_]+)/, groups) {print "data.addRow([\x27groups[2]\x27, groups[1]]);}' >> tmpAddRows.txt
 
 #Calls wrap contents on the temp file just created and passes the necessary html components
-bin/wrap_contents.sh html_components/username_dist tmpAddRows.txt html_components/username_dist
+/bin/bash "$(dirname "$0")/wrap_contents.sh" html_components/username_dist tmpAddRows.txt html_components/username_dist
