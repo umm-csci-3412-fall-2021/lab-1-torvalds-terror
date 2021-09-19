@@ -8,4 +8,4 @@ headerFooterName=$2
 outputFileName=$3
 
 #Concatinate files together into the output file
-cat "${headerFooterName}_header.html" "$contents" "${headerFooterName}_footer.html" > "$outputFileName"
+cat "$(pwd)/html_components/${headerFooterName}_header.html" "$contents" "$(pwd)/html_components/${headerFooterName}_footer.html" > "$outputFileName"
