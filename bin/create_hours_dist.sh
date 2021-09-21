@@ -3,6 +3,8 @@
 #Takes a directory as a command line input
 dir=$1
 
+cur_dir=$(pwd)
+
 #Peek into the directory
 cd "$dir" || exit
 
@@ -10,7 +12,7 @@ cd "$dir" || exit
 cat ./*/failed_login_data.txt | awk 'match($0, /[a-zA-Z]+[ 0-9]+ ([0-9]+) [a-zA-Z0-9]+[ 0-9.]+/, groups) {print groups[1]}' | sort | uniq -c | awk 'match($0, /([0-9]+) ([a-zA-Z0-9_]+)/, groups) {print "data.addRow([\x27"groups[2]"\x27, "groups[1]"]);"}' >> tmpAddRows.txt
 
 #Back it up a step
-cd .. || exit
+cd "$cur_dir" || exit
 
 #Calls wrap contents on the temp file just created and passes the necessary html components
-/bin/bash "$(dirname "$0")/wrap_contents.sh" "$dir"/tmpAddRows.txt hours_dist "$dir"/hours_dist.html
+./bin/wrap_contents.sh "$dir"/tmpAddRows.txt html_components/hours_dist "$dir"/hours_dist.html
