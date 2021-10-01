@@ -1,12 +1,8 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
-#Script takes a directory as input
-dir=$1
+DIRECTORY=$1
 
-#Enter given directory
-cd "$dir" || exit
+cd "$DIRECTORY" || exit
 
-#Run awk regex check and print on all files in the given directory
-for FILE in var/log/*; do 
-    awk 'match($0, /([a-zA-Z]+)[ ]+([0-9]+) ([0-9]+):[0-9]+:[0-9]+ [a-zA-Z_]+ sshd\[[0-9]+\]: Failed password for (|invalid user {1,})([a-zA-Z0-9_-]+) from ([0-9.]+)/, groups) {print groups[1]  groups[2] " " groups[3] " " groups[5] " " groups[6]}' < "$FILE" >> failed_login_data.txt
-done
+cat var/log/* > combined.txt
+awk 'match($0, /([a-zA-z]{3})  ?([0-9]{1,2}) ([0-9]{2})[0-9:]+ .+ Failed password .+ (.+) from ([0-9.]+)/, groups) {print groups[1] " " groups[2] " " groups[3] " " groups[4]  " " groups[5] "\n" }' combined.txt > failed_login_data.txt
